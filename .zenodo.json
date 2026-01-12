@@ -1,6 +1,6 @@
 {
-  "title": "WinMan: A Modern Window Manager and Workflow Accelerator for ImageJ/Fiji (v1.0.1)",
-  "description": "<p><strong>WinMan (v1.0.1)</strong> is a lightweight yet powerful utility plugin designed to streamline workspace management in ImageJ/Fiji. It addresses the 'desktop explosion' problem common in bioimage analysis workflows.</p><p><strong>Key Features:</strong></p><ul><li><strong>Smart Window Filtering:</strong> Close or keep windows based on title keywords (e.g., keep only 'C1' images).</li><li><strong>Batch Image Tools:</strong> One-click 'Auto Contrast' and 'Reset Zoom' for all open images.</li><li><strong>Layout Control:</strong> Modern flat UI with Tile/Cascade support.</li><li><strong>Memory Monitor:</strong> Real-time RAM usage display with one-click Garbage Collection (GC).</li></ul>",
+  "title": "Ratio Imaging Analyzer (RIA): A Standalone, Zero-Dependency Tool for Robust Ratiometric Fluorescence Analysis (v1.1.1)",
+  "description": "<p><strong>Ratio Imaging Analyzer (RIA) v1.1.1</strong> is an open-source desktop application designed to streamline the processing of ratiometric fluorescence imaging data (e.g., FRET, Calcium, pH sensors).</p><p><strong>v1.1.1 Update Highlights:</strong><br>To balance portability with professional power, RIA is now available in two editions:</p><ul><li><strong>⚡ RIA Lite (Standalone EXE):</strong> A re-engineered, ultra-compact executable optimized for instant startup and maximum portability on standard Windows PCs.</li><li><strong>💎 RIA Pro (Python/PyPI):</strong> The full-featured Python version that integrates comprehensive dependencies including <strong>Olympus .oir</strong>, <strong>Nikon .nd2</strong>, and <strong>Zeiss .czi</strong>.</li></ul><p><strong>Key Features:</strong></p><ul><li><strong>🧠 Robust Motion Correction:</strong> Integrates the Enhanced Correlation Coefficient (ECC) algorithm.</li><li><strong>📉 Scientific-Grade Signal Processing:</strong> Implements custom <strong>Normalized Convolution</strong> to handle <code>NaN</code> values correctly.</li><li><strong>✨ High-Contrast ROI System:</strong> Features a custom multi-layered rendering engine.</li><li><strong>📊 Analysis Unchained:</strong> Allows rigorous background subtraction and time-series extraction on personal laptops.</li></ul><hr><p><strong>📧 Contact &amp; Support:</strong><br>For bug reports, collaboration, or feature requests, please contact:<br><strong>Kui Wang (Ph.D.)</strong><br>Email: <a href=\"mailto:k@cns.ac.cn\">k@cns.ac.cn</a><br>Institute: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">Center for Excellence in Brain Science and Intelligence Technology (CEBSIT), CAS</a><br>Website: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">www.cns.ac.cn</a></p>",
   "creators": [
     {
       "name": "Wang, Kui",
@@ -9,24 +9,12 @@
     }
   ],
   "access_right": "open",
-  "license": {
-    "id": "BSD-2-Clause"
-  },
+  "license": "MIT",
   "keywords": [
-    "imagej",
-    "fiji",
-    "imagej-plugin",
-    "window-manager",
-    "workflow-automation",
-    "productivity-tools",
-    "bioimage-analysis",
-    "gui"
+    "Python", "biology", "scientific-software", "GUI", "imagej-alternative",
+    "microscopy", "fluorescence-microscopy", "bioimage-analysis",
+    "quantitative-biology", "computer-vision", "ratiometric-imaging",
+    "FRET", "calcium-imaging", "biosensors", "motion-correction"
   ],
-  "upload_type": "software",
-  "related_identifiers": [
-    {
-      "relation": "isSupplementTo",
-      "identifier": "https://github.com/Epivitae/WinMan"
-    }
-  ]
+  "upload_type": "software"
 }
