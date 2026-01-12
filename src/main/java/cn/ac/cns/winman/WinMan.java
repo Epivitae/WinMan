@@ -74,7 +74,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
     private Timer memoryTimer;
 
     public WinMan() {
-        super(""); // 保持简短的 OS 标题，确保有地方拖动
+        super("Windows Manager"); // 保持简短的 OS 标题，确保有地方拖动
         if (instance != null) {
             instance.toFront();
             return;
