@@ -25,7 +25,7 @@
 
 <div align="center">
 
-<img src="images/winman.png" alt="WinMan Demo" width="60%">
+<img src="images/winman.png" alt="WinMan Demo" width="30%">
 <br>
 <em>(WinMan v1.0.0: Modern Flat UI with Compact Layout)</em>
 
