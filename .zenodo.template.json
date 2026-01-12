@@ -1,0 +1,32 @@
+{
+  "title": "WinMan: A Modern Window Manager and Workflow Accelerator for ImageJ/Fiji (v{{VERSION}})",
+  "description": "<p><strong>WinMan (v{{VERSION}})</strong> is a lightweight yet powerful utility plugin designed to streamline workspace management in ImageJ/Fiji. It addresses the 'desktop explosion' problem common in bioimage analysis workflows.</p><p><strong>Key Features:</strong></p><ul><li><strong>Smart Window Filtering:</strong> Close or keep windows based on title keywords (e.g., keep only 'C1' images).</li><li><strong>Batch Image Tools:</strong> One-click 'Auto Contrast' and 'Reset Zoom' for all open images.</li><li><strong>Layout Control:</strong> Modern flat UI with Tile/Cascade support.</li><li><strong>Memory Monitor:</strong> Real-time RAM usage display with one-click Garbage Collection (GC).</li></ul>",
+  "creators": [
+    {
+      "name": "Wang, Kui",
+      "affiliation": "Center for Excellence in Brain Science and Intelligence Technology (Institute of Neuroscience), Chinese Academy of Sciences",
+      "orcid": "0000-0002-9436-3632"
+    }
+  ],
+  "access_right": "open",
+  "license": {
+    "id": "BSD-2-Clause"
+  },
+  "keywords": [
+    "imagej",
+    "fiji",
+    "imagej-plugin",
+    "window-manager",
+    "workflow-automation",
+    "productivity-tools",
+    "bioimage-analysis",
+    "gui"
+  ],
+  "upload_type": "software",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/Epivitae/WinMan"
+    }
+  ]
+}
