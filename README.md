@@ -5,14 +5,14 @@
 <h1 align="center">WinMan: Window Manager & Workflow Accelerator</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/kuiwang/WinMan?label=latest%20release&style=flat-square&color=blue" alt="Release">
+  <img src="https://img.shields.io/github/v/release/Epivitae/WinMan?label=latest%20release&style=flat-square&color=blue" alt="Release">
   <img src="https://img.shields.io/badge/Platform-ImageJ%2FFiji-brightgreen?style=flat-square&logo=imagej" alt="Platform">
-  <img src="https://img.shields.io/github/license/kuiwang/WinMan?style=flat-square" alt="License">
+  <img src="https://img.shields.io/github/license/Epivitae/WinMan?style=flat-square" alt="License">
   <img src="https://img.shields.io/badge/Language-Java%208%2B-orange?style=flat-square&logo=java" alt="Java">
   <br>
-  <img src="https://img.shields.io/github/repo-size/kuiwang/WinMan?style=flat-square" alt="Size">
-  <img src="https://img.shields.io/github/downloads/kuiwang/WinMan/total?style=flat-square&color=blueviolet" alt="Downloads">
-  <a href="#"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.placeholder.svg" alt="DOI"></a>
+  <img src="https://img.shields.io/github/repo-size/Epivitae/WinMan?style=flat-square" alt="Size">
+  <img src="https://img.shields.io/github/downloads/Epivitae/WinMan/total?style=flat-square&color=blueviolet" alt="Downloads">
+  <a href="https://doi.org/10.5281/zenodo.18224551"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.18224551.svg" alt="DOI"></a>
 </p>
 
 <p align="center">
@@ -25,7 +25,7 @@
 
 <div align="center">
 
-<img src="images/winman.png" alt="WinMan Demo" width="30%">
+<img src="images/winman.png" alt="WinMan Demo" width="60%">
 <br>
 <em>(WinMan v1.0.0: Modern Flat UI with Compact Layout)</em>
 
@@ -65,7 +65,7 @@ Bioimage analysis often involves opening dozens of images, resulting tables, and
 
 ## 📥 Installation
 
-1.  Download the latest `WinMan-1.0.0.jar` from the [Releases Page](../../releases).
+1.  Download the latest `WinMan-1.0.0.jar` from the [Releases Page](https://github.com/kuiwang/WinMan/releases).
 2.  Drag and drop the file into your Fiji/ImageJ **`plugins`** folder (or main window).
 3.  Restart Fiji.
 4.  Navigate to: `Plugins > Biosensor Tool > WinMan Manager`.
@@ -116,12 +116,6 @@ If WinMan helps your daily workflow, please consider starring the repo or citing
   version = {v1.0.0},
   year = {2026},
   url = {[https://github.com/kuiwang/WinMan](https://github.com/kuiwang/WinMan)},
+  doi = {10.5281/zenodo.18224551},
   organization = {Chinese Academy of Sciences}
 }
-```
-
----
-
-<p align="center">
-  <strong>© 2026 Dr. Kui Wang | Chimeric Nano Sensor Team | www.cns.ac.cn</strong>
-</p>
