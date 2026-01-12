@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.scijava</groupId>
+        <artifactId>pom-scijava</artifactId>
+        <version>31.1.0</version>
+        <relativePath />
+    </parent>
+
+    <groupId>cn.ac.cns</groupId>
+    <artifactId>WinMan</artifactId>
+    <version>0.1.0</version>
+
+    <name>WinMan</name>
+    <description>A window manager utility for ImageJ.</description>
+    <url>http://www.cns.ac.cn</url>
+    <inceptionYear>2026</inceptionYear>
+
+    <organization>
+        <name>CNS</name>
+        <url>http://www.cns.ac.cn</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Simplified BSD License</name>
+            <url>https://opensource.org/licenses/BSD-2-Clause</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>kuiwang</id>
+            <name>Kui Wang</name>
+            <email>k@cns.ac.cn</email>
+            <url>http://www.cns.ac.cn</url>
+            <roles>
+                <role>maintainer</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor><name>None</name></contributor>
+    </contributors>
+
+    <mailingLists>
+        <mailingList>
+            <name>Image.sc Forum</name>
+            <archive>https://forum.image.sc/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <scm>
+        <connection>scm:git:git://github.com/kuiwang/WinMan</connection>
+        <developerConnection>scm:git:git@github.com:kuiwang/WinMan</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/kuiwang/WinMan</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/kuiwang/WinMan/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/kuiwang/WinMan/actions</url>
+    </ciManagement>
+
+    <properties>
+        <package-name>cn.ac.cns.winman</package-name>
+        <main-class>cn.ac.cns.winman.WinMan</main-class>
+        <license.licenseName>bsd_2</license.licenseName>
+        <license.copyrightOwners>Kui Wang</license.copyrightOwners>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>scijava.public</id>
+            <url>https://maven.scijava.org/content/groups/public</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.imagej</groupId>
+            <artifactId>ij</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
