@@ -1,6 +1,6 @@
 {
-  "title": "Ratio Imaging Analyzer (RIA): A Standalone, Zero-Dependency Tool for Robust Ratiometric Fluorescence Analysis (v1.1.1)",
-  "description": "<p><strong>Ratio Imaging Analyzer (RIA) v1.1.1</strong> is an open-source desktop application designed to streamline the processing of ratiometric fluorescence imaging data (e.g., FRET, Calcium, pH sensors).</p><p><strong>v1.1.1 Update Highlights:</strong><br>To balance portability with professional power, RIA is now available in two editions:</p><ul><li><strong>⚡ RIA Lite (Standalone EXE):</strong> A re-engineered, ultra-compact executable optimized for instant startup and maximum portability on standard Windows PCs.</li><li><strong>💎 RIA Pro (Python/PyPI):</strong> The full-featured Python version that integrates comprehensive dependencies including <strong>Olympus .oir</strong>, <strong>Nikon .nd2</strong>, and <strong>Zeiss .czi</strong>.</li></ul><p><strong>Key Features:</strong></p><ul><li><strong>🧠 Robust Motion Correction:</strong> Integrates the Enhanced Correlation Coefficient (ECC) algorithm.</li><li><strong>📉 Scientific-Grade Signal Processing:</strong> Implements custom <strong>Normalized Convolution</strong> to handle <code>NaN</code> values correctly.</li><li><strong>✨ High-Contrast ROI System:</strong> Features a custom multi-layered rendering engine.</li><li><strong>📊 Analysis Unchained:</strong> Allows rigorous background subtraction and time-series extraction on personal laptops.</li></ul><hr><p><strong>📧 Contact &amp; Support:</strong><br>For bug reports, collaboration, or feature requests, please contact:<br><strong>Kui Wang (Ph.D.)</strong><br>Email: <a href=\"mailto:k@cns.ac.cn\">k@cns.ac.cn</a><br>Institute: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">Center for Excellence in Brain Science and Intelligence Technology (CEBSIT), CAS</a><br>Website: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">www.cns.ac.cn</a></p>",
+  "title": "WinMan: The Modern Window Manager and Workflow Accelerator for ImageJ/Fiji (v2.0.0)",
+  "description": "<p><strong>WinMan (Window Manager) v2.0.0</strong> is a lightweight yet powerful utility plugin designed to streamline high-throughput microscopy workflows in ImageJ/Fiji. It addresses the \"Desktop Explosion\" problem common in bioimage analysis by acting as a digital housekeeper for your workspace.</p><p><strong>v2.0.0 Release Highlights:</strong><br>WinMan brings a commercial-grade user experience to the classic ImageJ environment:</p><ul><li><strong>🧠 Smart \"Invert\" Logic:</strong> Introduces the <strong>\"Keep Match\"</strong> engine. Instead of closing windows one by one, you can now define what to <em>keep</em> (e.g., \"Result\") and instantly clear the rest of the clutter.</li><li><strong>⚡ High-Throughput Batch Tools:</strong> Features a zero-click <strong>\"Auto Contrast All\"</strong> algorithm that instantly applies intelligent histogram stretching to 50+ open images, perfect for 16-bit low-light fluorescence data.</li><li><strong>🎨 Modern Flat Interface:</strong> Replaces the traditional gray AWT look with a custom <strong>Flat Design (Swing)</strong> UI, optimized with a compact \"Stick-supported\" layout to maximize screen real estate.</li><li><strong>🛡️ System Health Monitor:</strong> Integrates a live <strong>Memory Bar</strong> and one-click <strong>Garbage Collection (GC)</strong> to prevent memory overflows during heavy analysis sessions.</li></ul><p><strong>Key Features:</strong></p><ul><li><strong>🔍 Granular Filtering:</strong> Case-insensitive string matching for precise window targeting.</li><li><strong>📐 Layout Automation:</strong> Improved algorithms for <code>Tile</code> and <code>Cascade</code> window arrangements.</li><li><strong>🚀 Workflow Acceleration:</strong> One-click global <code>Reset Zoom</code> to standardize viewports.</li><li><strong>🔒 Data Safety:</strong> Built-in confirmation dialogs for destructive actions (e.g., \"Close All\") to prevent accidental data loss.</li></ul><hr><p><strong>📧 Contact &amp; Support:</strong><br>For bug reports, collaboration, or feature requests, please contact:<br><strong>Kui Wang (Ph.D.)</strong><br>Email: <a href=\"mailto:k@cns.ac.cn\">k@cns.ac.cn</a><br>Institute: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">Center for Excellence in Brain Science and Intelligence Technology (CEBSIT), CAS</a><br>Website: <a href=\"http://www.cns.ac.cn\" target=\"_blank\">www.cns.ac.cn</a></p>",
   "creators": [
     {
       "name": "Wang, Kui",
@@ -9,12 +9,28 @@
     }
   ],
   "access_right": "open",
-  "license": "MIT",
+  "license": {
+    "id": "BSD-2-Clause"
+  },
   "keywords": [
-    "Python", "biology", "scientific-software", "GUI", "imagej-alternative",
-    "microscopy", "fluorescence-microscopy", "bioimage-analysis",
-    "quantitative-biology", "computer-vision", "ratiometric-imaging",
-    "FRET", "calcium-imaging", "biosensors", "motion-correction"
+    "imagej",
+    "fiji",
+    "imagej-plugin",
+    "bioimage-analysis",
+    "workflow-automation",
+    "window-manager",
+    "productivity-tools",
+    "memory-management",
+    "gui",
+    "java-swing",
+    "microscopy",
+    "batch-processing"
   ],
-  "upload_type": "software"
+  "upload_type": "software",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/Epivitae/WinMan"
+    }
+  ]
 }
