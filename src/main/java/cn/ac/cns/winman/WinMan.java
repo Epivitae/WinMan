@@ -1,9 +1,11 @@
 package cn.ac.cns.winman;
 
 import ij.IJ;
+import ij.ImageListener;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.GUI;
+import ij.gui.ImageCanvas;
 import ij.plugin.PlugIn;
 import ij.plugin.frame.PlugInFrame;
 import ij.process.ImageProcessor;
@@ -15,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -28,10 +31,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +47,7 @@ import java.util.Properties;
 
 /**
  * WinMan - Window Manager
- * v1.0.0 - Official Release
+ * v1.1.0 - Sync View Added
  * @author Kui Wang
  */
 public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
@@ -54,32 +61,35 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
     private static final Color BTN_BG_NORMAL   = Color.WHITE;
     private static final Color BTN_BG_HOVER    = new Color(235, 240, 245); 
     private static final Color BTN_BORDER      = new Color(200, 200, 200); 
+    private static final Color BTN_SYNC_ON     = new Color(220, 240, 255); // 新增：同步开启时的背景色
 
     // --- 2. Centralized Font Configuration (字体统一管理) ---
-    // 修改这里可以改变全局字体大小
-    private static final Font FONT_GRP_TITLE  = new Font("SansSerif", Font.BOLD, 13);  // 蓝色分组标题 (大)
-    private static final Font FONT_BTN_NORMAL = new Font("SansSerif", Font.PLAIN, 12); // 普通按钮文字 (中)
-    private static final Font FONT_BTN_BOLD   = new Font("SansSerif", Font.BOLD, 13);  // 重点按钮文字 (大粗)
-    private static final Font FONT_INPUT      = new Font("SansSerif", Font.PLAIN, 13); // 输入框文字
-    private static final Font FONT_MEMORY     = new Font("SansSerif", Font.PLAIN, 10); // 底部内存条 (小)
+    private static final Font FONT_GRP_TITLE  = new Font("SansSerif", Font.BOLD, 13);
+    private static final Font FONT_BTN_NORMAL = new Font("SansSerif", Font.PLAIN, 12);
+    private static final Font FONT_BTN_BOLD   = new Font("SansSerif", Font.BOLD, 13);
+    private static final Font FONT_INPUT      = new Font("SansSerif", Font.PLAIN, 13);
+    private static final Font FONT_MEMORY     = new Font("SansSerif", Font.PLAIN, 10);
 
     // Components
     private JTextField filterField;
     private JButton btnCloseMatch, btnKeepMatch, btnCloseAll;
     private JButton btnTile, btnCascade;
     private JButton btnAutoContrast, btnResetZoom;
+    private JToggleButton btnSyncView; // 新增：同步开关
     private JProgressBar memoryBar;
 
     private static WinMan instance;
     private Timer memoryTimer;
+    private SyncManager syncManager; // 新增：同步管理器
 
     public WinMan() {
-        super("Windows Manager"); // 保持简短的 OS 标题，确保有地方拖动
+        super("Windows Manager"); 
         if (instance != null) {
             instance.toFront();
             return;
         }
         instance = this;
+        syncManager = new SyncManager(); // 初始化同步管理器
         
         String version = getVersion();
         setCustomIcon("/icons/winman_icon.png");
@@ -96,13 +106,13 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         bodyPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15)); 
         
         // 🔥【布局核心】硬性支撑
-        // 宽度 300: 足够容纳按钮，且不占太多屏幕
-        // 高度 480: 强制撑开纵向空间，防止挤压
-        bodyPanel.setPreferredSize(new Dimension(260, 280)); 
+        // 宽度 260: 保持不变
+        // 高度 320: 从 280 微调至 320，为新增的 Sync 按钮腾出空间，防止 CloseAll 被挤压
+        bodyPanel.setPreferredSize(new Dimension(260, 320)); 
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 0); // 增加组件组之间的垂直间距
+        c.insets = new Insets(0, 0, 0, 0); 
         c.weightx = 1.0;
         c.gridx = 0;
 
@@ -114,7 +124,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         c.gridy = 1;
         bodyPanel.add(createWindowToolsPanel(), c);
 
-        // Group 3: Image Tools
+        // Group 3: Image Tools (Sync View 在这里)
         c.gridy = 2;
         bodyPanel.add(createImageToolsPanel(), c);
         
@@ -126,7 +136,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         
         btnCloseAll = createFlatButton("Close ALL Images", false);
         btnCloseAll.setForeground(new Color(220, 50, 50)); 
-        btnCloseAll.setFont(FONT_BTN_BOLD); // 使用大号字体
+        btnCloseAll.setFont(FONT_BTN_BOLD); 
         btnCloseAll.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) { btnCloseAll.setBackground(new Color(255, 235, 235)); }
             public void mouseExited(MouseEvent e) { btnCloseAll.setBackground(BTN_BG_NORMAL); }
@@ -166,9 +176,6 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
             p.add(new JLabel(new ImageIcon(resizedImg)), BorderLayout.WEST);
         }
 
-        // HTML Header: 控制字体大小
-        // 标题: 14px Bold Blue
-        // 版本号: 9px Gray (更小，更精致)
         String html = "<html>" +
                 "<div style='font-family: SansSerif;'>" +
                 "<span style='font-size:14px; font-weight:bold; color:rgb(" + TEXT_BLUE.getRed() + "," + TEXT_BLUE.getGreen() + "," + TEXT_BLUE.getBlue() + ");'>WinMan Manager</span><br>" +
@@ -191,7 +198,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         
         c.gridx = 0; c.gridy = 0; c.gridwidth = 2;
         filterField = new JTextField();
-        filterField.setFont(FONT_INPUT); // 使用统一配置
+        filterField.setFont(FONT_INPUT); 
         filterField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(BTN_BORDER, 1),
                 BorderFactory.createEmptyBorder(4, 4, 4, 4) 
@@ -239,18 +246,52 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(8, 8, 8, 4);
         c.weightx = 0.5;
 
+        // Row 1: Auto Contrast & Reset Zoom
+        c.gridy = 0;
+        
+        c.gridx = 0;
+        c.insets = new Insets(8, 8, 4, 4); // 下方间距调小，给第二行留位置
         btnAutoContrast = createFlatButton("Auto Contrast", true);
         btnAutoContrast.setToolTipText("Auto adjust B&C for all images");
         p.add(btnAutoContrast, c);
 
         c.gridx = 1;
-        c.insets = new Insets(8, 4, 8, 8);
+        c.insets = new Insets(8, 4, 4, 8);
         btnResetZoom = createFlatButton("Reset Zoom", true);
         btnResetZoom.setToolTipText("Zoom 100% for all images");
         p.add(btnResetZoom, c);
+        
+        // Row 2: Sync View (New)
+        c.gridy = 1; c.gridx = 0; c.gridwidth = 2;
+        c.insets = new Insets(4, 8, 8, 8); // 上方间距调小
+        
+        btnSyncView = new JToggleButton("Sync View (Pan/Zoom/Slice)");
+        btnSyncView.setFont(FONT_BTN_NORMAL);
+        btnSyncView.setFocusPainted(false);
+        btnSyncView.setBackground(BTN_BG_NORMAL);
+        btnSyncView.setForeground(Color.DARK_GRAY);
+        btnSyncView.setBorder(BorderFactory.createLineBorder(BTN_BORDER, 1));
+        btnSyncView.setMargin(new Insets(6, 0, 6, 0));
+        btnSyncView.setToolTipText("Synchronize Slice, Zoom and Pan across open images");
+        
+        // Sync 按钮事件
+        btnSyncView.addActionListener(e -> {
+            if (btnSyncView.isSelected()) {
+                btnSyncView.setBackground(BTN_SYNC_ON);
+                btnSyncView.setText("Sync View [ON]");
+                syncManager.start(); 
+                IJ.showStatus("Sync ON");
+            } else {
+                btnSyncView.setBackground(BTN_BG_NORMAL);
+                btnSyncView.setText("Sync View (Pan/Zoom/Slice)");
+                syncManager.stop(); 
+                IJ.showStatus("Sync OFF");
+            }
+        });
+        
+        p.add(btnSyncView, c);
 
         return p;
     }
@@ -263,7 +304,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         memoryBar = new JProgressBar(0, 100);
         memoryBar.setStringPainted(true);
         memoryBar.setString("Memory: Calculating...");
-        memoryBar.setFont(FONT_MEMORY); // 使用统一配置
+        memoryBar.setFont(FONT_MEMORY); 
         memoryBar.setForeground(new Color(100, 180, 100)); 
         memoryBar.setBackground(Color.WHITE);
         memoryBar.setBorder(BorderFactory.createLineBorder(BTN_BORDER));
@@ -326,7 +367,9 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
                     IJ.run(imp, "Enhance Contrast", "saturated=0.35");
                     count++;
                 } else if ("Reset Zoom".equals(command)) {
-                    imp.getWindow().getCanvas().zoom100Percent();
+                    if (imp.getWindow() != null && imp.getCanvas() != null) {
+                        imp.getCanvas().zoom100Percent();
+                    }
                     count++;
                 }
             }
@@ -372,7 +415,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
     }
     private JButton createFlatButton(String text, boolean addListener) {
         JButton btn = new JButton(text);
-        btn.setFont(FONT_BTN_NORMAL); // 使用统一配置
+        btn.setFont(FONT_BTN_NORMAL); 
         btn.setFocusPainted(false); 
         btn.setBackground(BTN_BG_NORMAL);
         btn.setForeground(Color.DARK_GRAY);
@@ -389,7 +432,7 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
         Border line = BorderFactory.createLineBorder(BTN_BORDER, 1);
         TitledBorder tb = BorderFactory.createTitledBorder(line, title);
         tb.setTitleColor(TEXT_BLUE);
-        tb.setTitleFont(FONT_GRP_TITLE); // 使用统一配置
+        tb.setTitleFont(FONT_GRP_TITLE); 
         return tb;
     }
     private void setCustomIcon(String path) {
@@ -406,7 +449,115 @@ public class WinMan extends PlugInFrame implements PlugIn, ActionListener {
     @Override public void run(String arg) {}
     @Override public void windowClosing(WindowEvent e) {
         if (memoryTimer != null) memoryTimer.stop(); 
+        if (syncManager != null) syncManager.stop(); // 确保退出时关闭同步监听
         super.windowClosing(e);
         instance = null;
+    }
+    
+    // --- Inner Class: Sync Manager (The Logic) ---
+    private class SyncManager implements ImageListener, MouseMotionListener, MouseWheelListener {
+        private boolean active = false;
+        private boolean updating = false;
+
+        public void start() {
+            if (active) return;
+            active = true;
+            ImagePlus.addImageListener(this); 
+            attachToOpenWindows();
+        }
+
+        public void stop() {
+            if (!active) return;
+            active = false;
+            ImagePlus.removeImageListener(this);
+            detachFromOpenWindows();
+        }
+
+        private void attachToOpenWindows() {
+            int[] list = WindowManager.getIDList();
+            if (list == null) return;
+            for (int id : list) {
+                ImagePlus imp = WindowManager.getImage(id);
+                attach(imp);
+            }
+        }
+        private void detachFromOpenWindows() {
+            int[] list = WindowManager.getIDList();
+            if (list == null) return;
+            for (int id : list) {
+                ImagePlus imp = WindowManager.getImage(id);
+                detach(imp);
+            }
+        }
+        
+        private void attach(ImagePlus imp) {
+            if (imp == null || imp.getWindow() == null || imp.getCanvas() == null) return;
+            ImageCanvas ic = imp.getCanvas();
+            ic.removeMouseMotionListener(this);
+            ic.removeMouseWheelListener(this);
+            ic.addMouseMotionListener(this);
+            ic.addMouseWheelListener(this);
+        }
+        private void detach(ImagePlus imp) {
+            if (imp == null || imp.getCanvas() == null) return;
+            imp.getCanvas().removeMouseMotionListener(this);
+            imp.getCanvas().removeMouseWheelListener(this);
+        }
+
+        private void syncAll(ImagePlus source) {
+            if (updating || source == null) return;
+            try {
+                updating = true;
+                int currentSlice = source.getCurrentSlice();
+                ImageCanvas srcCanvas = source.getCanvas();
+                if (srcCanvas == null) return;
+                
+                Rectangle srcRect = srcCanvas.getSrcRect();
+                double mag = srcCanvas.getMagnification();
+
+                int[] list = WindowManager.getIDList();
+                if (list == null) return;
+
+                for (int id : list) {
+                    ImagePlus target = WindowManager.getImage(id);
+                    if (target != null && target != source && target.getWidth() == source.getWidth() && target.getHeight() == source.getHeight()) {
+                        // 1. Sync Slice
+                        if (target.getStackSize() > 1 && target.getCurrentSlice() != currentSlice) {
+                             if (currentSlice <= target.getStackSize()) {
+                                 target.setSlice(currentSlice);
+                             }
+                        }
+                        // 2. Sync Pan & Zoom
+                        ImageCanvas tgtCanvas = target.getCanvas();
+                        if (tgtCanvas != null) {
+                            if (tgtCanvas.getMagnification() != mag || !tgtCanvas.getSrcRect().equals(srcRect)) {
+                                tgtCanvas.setMagnification(mag);
+                                tgtCanvas.setSourceRect(new Rectangle(srcRect));
+                                tgtCanvas.repaint();
+                            }
+                        }
+                    }
+                }
+            } finally {
+                updating = false;
+            }
+        }
+
+        @Override public void imageOpened(ImagePlus imp) { attach(imp); }
+        @Override public void imageClosed(ImagePlus imp) { detach(imp); }
+        @Override public void imageUpdated(ImagePlus imp) { 
+            if (active && imp == WindowManager.getCurrentImage()) {
+                syncAll(imp);
+            }
+        }
+        @Override public void mouseDragged(MouseEvent e) {
+            if (active) syncAll(WindowManager.getCurrentImage());
+        }
+        @Override public void mouseMoved(MouseEvent e) {}
+        @Override public void mouseWheelMoved(MouseWheelEvent e) {
+            SwingUtilities.invokeLater(() -> {
+                if (active) syncAll(WindowManager.getCurrentImage());
+            });
+        }
     }
 }
