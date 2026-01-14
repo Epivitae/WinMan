@@ -115,7 +115,7 @@ If WinMan helps your daily workflow, please consider starring the repo or citing
   title = {WinMan: A Modern Window Manager and Workflow Accelerator for ImageJ/Fiji},
   version = {v1.0.0},
   year = {2026},
-  url = {[https://github.com/kuiwang/WinMan](https://github.com/kuiwang/WinMan)},
+  url = {[https://github.com/Epivitae/WinMan](https://github.com/kuiwang/WinMan)},
   doi = {10.5281/zenodo.18224551},
   organization = {Chinese Academy of Sciences}
 }
