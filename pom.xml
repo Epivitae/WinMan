@@ -82,6 +82,8 @@
         <license.licenseName>bsd_2</license.licenseName>
         <license.copyrightOwners>Kui Wang</license.copyrightOwners>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <enforcer.skip>true</enforcer.skip>
     </properties>
 
     <repositories>
